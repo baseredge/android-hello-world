@@ -20,24 +20,21 @@ jobs:
           distribution: 'temurin'
           cache: gradle
 
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+        with:
+          packages: |
+            platforms;android-34
+            build-tools;34.0.0
+
       - name: Generate Gradle Wrapper
         run: gradle wrapper --gradle-version 8.7
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      - name: Check Android SDK
-        run: |
-          echo "ANDROID_HOME=$ANDROID_HOME"
-          echo "ANDROID_SDK_ROOT=$ANDROID_SDK_ROOT"
-          ls "$ANDROID_HOME/platforms/" 2>/dev/null || echo "no platforms dir"
-          ls "$ANDROID_HOME/build-tools/" 2>/dev/null || echo "no build-tools dir"
-
-      - name: Create local.properties
-        run: echo "sdk.dir=$ANDROID_HOME" > local.properties
-
       - name: Build with Gradle
-        run: ./gradlew assembleDebug --stacktrace
+        run: ./gradlew assembleDebug
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
