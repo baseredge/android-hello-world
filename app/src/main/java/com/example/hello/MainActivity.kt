@@ -1,18 +1,11 @@
 package com.example.hello
 
-import android.app.Activity
 import android.os.Bundle
-import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 
-class MainActivity : Activity() {
+class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        val textView = TextView(this)
-        textView.text = getString(R.string.hello_text)
-        textView.textSize = 24f
-        textView.setPadding(64, 64, 64, 64)
-
-        setContentView(textView)
+        setContentView(R.layout.activity_main)
     }
 }

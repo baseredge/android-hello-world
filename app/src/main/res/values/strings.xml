@@ -1,5 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Hello World</string>
-    <string name="hello_text">Hello World from GitHub Actions!</string>
+    <string name="app_name">GitHub Actions Demo</string>
+
+    <string name="login_title">欢迎回来</string>
+    <string name="login_subtitle">登录您的账号</string>
+    <string name="email_hint">邮箱</string>
+    <string name="password_hint">密码</string>
+    <string name="login_button">登 录</string>
+    <string name="go_register">还没有账号？立即注册</string>
+
+    <string name="register_title">创建账号</string>
+    <string name="register_subtitle">填写信息注册新账号</string>
+    <string name="nickname_hint">昵称</string>
+    <string name="confirm_password_hint">确认密码</string>
+    <string name="register_button">注 册</string>
+    <string name="go_login">已有账号？立即登录</string>
+
+    <string name="home_title">登录成功 🎉</string>
+    <string name="home_subtitle">您已通过 GitHub Actions 编译的 APK 完成登录</string>
+    <string name="logout_button">退出登录</string>
+
+    <string name="error_empty_email">请输入邮箱</string>
+    <string name="error_empty_password">请输入密码</string>
+    <string name="error_empty_nickname">请输入昵称</string>
+    <string name="error_password_mismatch">两次密码不一致</string>
 </resources>
