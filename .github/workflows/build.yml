@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
 
     steps:
       - name: Checkout code
@@ -28,15 +28,28 @@ jobs:
           cd $GITHUB_WORKSPACE
           gradle wrapper --gradle-version 8.7
 
+      - name: Set up Android SDK
+        run: |
+          ANDROID_HOME=/usr/local/lib/android/sdk
+          echo "sdk.dir=$ANDROID_HOME" > local.properties
+          echo "ANDROID_HOME=$ANDROID_HOME" >> $GITHUB_ENV
+          echo "=== Installed platforms ==="
+          ls $ANDROID_HOME/platforms/ 2>/dev/null || echo "(none)"
+          echo "=== Installed build-tools ==="
+          ls $ANDROID_HOME/build-tools/ 2>/dev/null || echo "(none)"
+          if [ -f "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" ]; then
+            echo "=== Installing SDK 34 ==="
+            yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "platforms;android-34" "build-tools;34.0.0" --sdk_root=$ANDROID_HOME 2>&1 | tail -5
+          else
+            echo "=== sdkmanager not found at expected path ==="
+            find /usr/local/lib/android -name sdkmanager 2>/dev/null || echo "sdkmanager not found anywhere"
+          fi
+
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
 
-      - name: Create local.properties
-        run: |
-          echo "sdk.dir=/usr/local/lib/android/sdk" > local.properties
-
       - name: Build debug APK
-        run: ./gradlew assembleDebug
+        run: ./gradlew assembleDebug --info 2>&1 | tail -80
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
