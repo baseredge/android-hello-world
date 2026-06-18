@@ -39,11 +39,15 @@ jobs:
           ./gradlew assembleDebug 2>&1 | tee build-output.txt
           echo "BUILD_EXIT_CODE=${PIPESTATUS[0]}" >> $GITHUB_OUTPUT
 
+      - name: List APK output
+        run: find app/build/outputs/apk -type f 2>/dev/null || echo "no apk dir"
+
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: app-debug
-          path: app/build/outputs/apk/debug/app-debug.apk
+          path: app/build/outputs/apk/debug/*.apk
+          if-no-files-found: error
 
       - name: Report Failure to Issue
         if: failure()
