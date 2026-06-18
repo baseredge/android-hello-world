@@ -19,6 +19,12 @@ jobs:
           java-version: "17"
           distribution: "temurin"
 
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v3
+
+      - name: Generate Gradle wrapper
+        run: gradle wrapper --gradle-version 8.7
+
       - name: Set up Android SDK
         run: |
           ANDROID_SDK_ROOT=/usr/local/lib/android/sdk
@@ -28,15 +34,13 @@ jobs:
           unzip -q commandlinetools-linux-11076708_latest.zip
           mv cmdline-tools latest
           echo "ANDROID_SDK_ROOT=$ANDROID_SDK_ROOT" >> $GITHUB_ENV
+          echo "ANDROID_HOME=$ANDROID_SDK_ROOT" >> $GITHUB_ENV
           yes | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --licenses > /dev/null
           $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager "platforms;android-34" "build-tools;34.0.0"
           echo "sdk.dir=$ANDROID_SDK_ROOT" > local.properties
 
-      - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@v3
-
       - name: Build debug APK
-        run: gradle assembleDebug
+        run: ./gradlew assembleDebug
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
