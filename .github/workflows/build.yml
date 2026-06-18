@@ -7,10 +7,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-22.04
-    env:
-      ANDROID_HOME: /usr/local/lib/android/sdk
-      ANDROID_SDK_ROOT: /usr/local/lib/android/sdk
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
@@ -22,16 +19,21 @@ jobs:
           java-version: "17"
           distribution: "temurin"
 
-      - name: Install Android SDK packages
+      - name: Download and generate Gradle wrapper
         run: |
-          echo "sdk.dir=$ANDROID_HOME" > local.properties
-          echo "y" | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "platforms;android-34" "build-tools;34.0.0" --sdk_root=$ANDROID_HOME
+          cd /tmp
+          curl -sSLO https://services.gradle.org/distributions/gradle-8.7-bin.zip
+          unzip -q gradle-8.7-bin.zip
+          export PATH="/tmp/gradle-8.7/bin:$PATH"
+          cd $GITHUB_WORKSPACE
+          gradle wrapper --gradle-version 8.7
 
       - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@v3
+        uses: gradle/actions/setup-gradle@v4
 
-      - name: Generate Gradle wrapper
-        run: gradle wrapper --gradle-version 8.7
+      - name: Create local.properties
+        run: |
+          echo "sdk.dir=/usr/local/lib/android/sdk" > local.properties
 
       - name: Build debug APK
         run: ./gradlew assembleDebug
