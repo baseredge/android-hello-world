@@ -38,19 +38,7 @@ jobs:
         run: chmod +x gradlew
 
       - name: Build with Gradle
-        id: build
-        run: ./gradlew assembleDebug 2>&1 | tee gradle-output.txt
-        continue-on-error: true
-
-      - name: Check build result
-        run: |
-          if grep -q "BUILD SUCCESSFUL" gradle-output.txt; then
-            echo "Build succeeded"
-            exit 0
-          else
-            echo "Build failed"
-            exit 1
-          fi
+        run: ./gradlew assembleDebug > gradle-output.txt 2>&1
 
       - name: List APK output
         run: find app/build -name "*.apk" -type f 2>/dev/null || echo "no apk found"
