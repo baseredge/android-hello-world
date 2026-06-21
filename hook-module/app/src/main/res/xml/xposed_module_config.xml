@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xposed-module>
+    <scope>com.example.testapp</scope>
+</xposed-module>
