@@ -15,3 +15,7 @@
 ## 编译状态
 
 ![Build](https://github.com/baseredge/android-hello-world/actions/workflows/build.yml/badge.svg)
+
+## 测试推送
+
+此行用于测试云端推送功能。
